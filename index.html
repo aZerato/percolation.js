@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title>Percolation.js</title>
+
+	<script src="./scripts/objects/Tree.js"></script>
+	<script src="./scripts/functions/Matrix.js"></script>
+	<script src="./scripts/Main.js"></script>
+
+	<script>
+		var start = function() {
+			var $elCanvas = document.getElementById('forest');
+
+			var main = new Main($elCanvas, 300, 300, 0.55);
+
+			main.init();
+
+			main.launch();
+		};
+	</script>
+</head>
+<body onload="start()">
+	<a href="https://zestedesavoir.com/forums/sujet/4690/novembre-2015-simulation-dun-feu-de-foret/?page=1">Idée de base</a>
+
+	<canvas id="forest" width="300" height="300"></canvas>
+
+</body>
+</html>
