@@ -13,57 +13,69 @@ var Tree = (function() {
 		// state level : 0 : good / 1 : burn / burned
 		this.state = 0;
 
+		// check if fire was passed
+		this.attempted = false;
+
 		// canvas context
 		this.ctx = ctx;
 
-		ctx.fillStyle = "green";
-		ctx.fillRect(posX, posY, 1, 1);
+		this.ctx.fillStyle = "green";
+		this.ctx.fillRect(posX, posY, 1, 1);
 	};
 
-	Tree.prototype.changeState = function(state, forest, percolation) {
-		if(state == 1)
+	Tree.prototype.changeState = function(state, forest, percolation, sizeX, sizeY) {
+		var self = this;
+
+		if(state == state)
 		{
-			self.state = 1;
+			self.state = state;
+			self.attempted = true;
 			self.ctx.fillStyle = "red";
 			self.ctx.fillRect(self.posX, self.posY, 1, 1);
+
+			SpreadFires(forest, percolation, sizeX, sizeY, self.posX, self.posY);
 		}
 	};
 
-	var SpreadFires = function(main, fireX, fireY)
+	var SpreadFires = function(forest, percolation, sizeX, sizeY, fireX, fireY)
 	{
-		if (fireX + 1 < main.sizeX &&
-			main.forest[fireX + 1][fireY] != undefined)
+		if (fireX + 1 < sizeX &&
+			forest[fireX + 1][fireY] != undefined &&
+			forest[fireX + 1][fireY].attempted == false)
 		{
-			if(AttemptToBurn(main.percolation))
+			if(AttemptToBurn(percolation))
 			{
-				main.forest[fireX + 1][fireY].changeState(1);
+				forest[fireX + 1][fireY].changeState(1, forest, percolation, sizeX, sizeY, fireX + 1, fireY);
 			}
 		}
 
 		if (fireX - 1 >= 0 &&
-			main.forest[fireX - 1][fireY] != undefined)
+			forest[fireX - 1][fireY] != undefined &&
+			forest[fireX - 1][fireY].attempted == false)
 		{
-			if(AttemptToBurn(main.percolation))
+			if(AttemptToBurn(percolation))
 			{
-				main.forest[fireX - 1][fireY].changeState(1);
+				forest[fireX - 1][fireY].changeState(1, forest, percolation, sizeX, sizeY, fireX - 1, fireY);
 			}
 		}
 
-		if (fireY + 1 < main.sizeY &&
-			main.forest[fireX][fireY + 1] != undefined)
+		if (fireY + 1 < sizeY &&
+			forest[fireX][fireY + 1] != undefined &&
+			forest[fireX][fireY + 1].attempted == false)
 		{
-			if(AttemptToBurn(main.percolation))
+			if(AttemptToBurn(percolation))
 			{
-				main.forest[fireX][fireY + 1].changeState(1);
+				forest[fireX][fireY + 1].changeState(1, forest, percolation, sizeX, sizeY, fireX, fireY + 1);
 			}
 		}
 
 		if (fireY - 1 >= 0 &&
-			main.forest[fireX][fireY - 1] != undefined)
+			forest[fireX][fireY - 1] != undefined &&
+			forest[fireX][fireY - 1].attempted == false)
 		{
-			if(AttemptToBurn(main.percolation))
+			if(AttemptToBurn(percolation))
 			{
-				main.forest[fireX][fireY - 1].changeState(1);
+				forest[fireX][fireY - 1].changeState(1, forest, percolation, sizeX, sizeY, fireX, fireY - 1);
 			}
 		}
 	};

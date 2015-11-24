@@ -26,7 +26,7 @@ var Main = (function() {
 				// creation of new Tree on Canvas 
 				var tree = new Tree(x, y, 0, self.ctx);
 
-				self.forest[x][y] = [tree];
+				self.forest[x][y] = tree;
 			}
 		}
 	};
@@ -39,8 +39,8 @@ var Main = (function() {
 		var fireX = Math.floor((Math.random() * self.sizeX) + 1);
 		var fireY = Math.floor((Math.random() * self.sizeY) + 1);
 		
-		// immediatly the tree at this position was burned
-		self.forest[fireX][fireY].changeState(1);
+		// immediatly the tree at this position was burned & after the fire spreading
+		self.forest[fireX][fireY].changeState(1, self.forest, self.percolation, self.sizeX, self.sizeY);
 	};
 
 	return Main;
