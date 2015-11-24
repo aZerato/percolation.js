@@ -16,6 +16,7 @@
 	</style>
 
 	<script src="./scripts/objects/Tree.js"></script>
+	<script src="./scripts/objects/Water.js"></script>
 	<script src="./scripts/functions/Matrix.js"></script>
 	<script src="./scripts/Main.js"></script>
 
@@ -23,7 +24,7 @@
 		var start = function() {
 			var $elCanvas = document.getElementById('forest');
 
-			var main = new Main($elCanvas, 300, 300, 0.50);
+			var main = new Main($elCanvas, 300, 300, 0.50, true);
 
 			main.init();
 

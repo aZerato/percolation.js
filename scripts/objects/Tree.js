@@ -6,6 +6,8 @@ var Tree = (function() {
 		state,
 		ctx)
 	{
+		this.typeOf = 'Tree';
+
 		this.posX = posX;
 
 		this.posY = posY;
@@ -26,7 +28,7 @@ var Tree = (function() {
 	Tree.prototype.changeState = function(state, forest, percolation, sizeX, sizeY) {
 		var self = this;
 
-		if(state == state)
+		if(state == 1)
 		{
 			self.state = state;
 			self.attempted = true;
@@ -45,7 +47,7 @@ var Tree = (function() {
 		{
 			if(AttemptToBurn(percolation))
 			{
-				forest[fireX + 1][fireY].changeState(1, forest, percolation, sizeX, sizeY, fireX + 1, fireY);
+				forest[fireX + 1][fireY].changeState(1, forest, percolation, sizeX, sizeY);
 			}
 		}
 
@@ -55,7 +57,7 @@ var Tree = (function() {
 		{
 			if(AttemptToBurn(percolation))
 			{
-				forest[fireX - 1][fireY].changeState(1, forest, percolation, sizeX, sizeY, fireX - 1, fireY);
+				forest[fireX - 1][fireY].changeState(1, forest, percolation, sizeX, sizeY);
 			}
 		}
 
@@ -65,7 +67,7 @@ var Tree = (function() {
 		{
 			if(AttemptToBurn(percolation))
 			{
-				forest[fireX][fireY + 1].changeState(1, forest, percolation, sizeX, sizeY, fireX, fireY + 1);
+				forest[fireX][fireY + 1].changeState(1, forest, percolation, sizeX, sizeY);
 			}
 		}
 
@@ -75,7 +77,7 @@ var Tree = (function() {
 		{
 			if(AttemptToBurn(percolation))
 			{
-				forest[fireX][fireY - 1].changeState(1, forest, percolation, sizeX, sizeY, fireX, fireY - 1);
+				forest[fireX][fireY - 1].changeState(1, forest, percolation, sizeX, sizeY);
 			}
 		}
 	};
