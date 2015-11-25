@@ -11,7 +11,7 @@ var Main = (function() {
 		this.percolation = percolation * 100;
 		this.waterPercolation = waterPercolation * 100;
 
-		this.forest = new Matrix(sizeX, sizeY, {});
+		this.forest = new Matrix(sizeX, sizeY, undefined);
 
 		this.ctx = {};
 	};
@@ -20,7 +20,7 @@ var Main = (function() {
 		var self = this;
 
 		// canvas creation
-		self.ctx = self.$canvas.getContext("2d");;
+		self.ctx = self.$canvas.getContext('2d');;
 	};
 
 	Main.prototype.initWater = function() {
@@ -29,9 +29,8 @@ var Main = (function() {
 		var waterX = Math.floor((Math.random() * self.sizeX) + 1);
 		var waterY = Math.floor((Math.random() * self.sizeY) + 1);
 
-		var el = self.forest[waterX][waterY];
-		el = new Water(waterX, waterY, self.ctx);
-		el.spreadWater(self.forest, self.waterPercolation, self.sizeX, self.sizeY, waterX, waterY, self.ctx);
+		self.forest[waterX][waterY] = new Water(waterX, waterY, self.ctx);
+		self.forest[waterX][waterY].SpreadWater(self.forest, self.waterPercolation, self.sizeX, self.sizeY, waterX, waterY, self.ctx);
 	};
 
 	Main.prototype.initTrees = function() {
@@ -40,9 +39,15 @@ var Main = (function() {
 		for (var x = self.sizeX - 1; x >= 0; x--) {
 			for (var y = self.sizeY - 1; y >= 0; y--) {
 				if(self.forest[x][y] == undefined ||
-					self.forest[x][y].typeOf == undefined ||
-					self.forest[x][y].typeOf != 'Tree' ||
-					self.forest[x][y].typeOf == 'Fire'
+					(
+						self.forest[x][y].attempted == undefined ||
+						self.forest[x][y].attempted == false
+					)
+					&&
+					(
+						self.forest[x][y].typeOf == undefined ||
+						self.forest[x][y].typeOf != 'Water'
+					)
 				)
 				{
 					// creation of new Tree on Canvas 
@@ -54,7 +59,7 @@ var Main = (function() {
 		}
 	};
 
-	Main.prototype.launchFire = function()
+	Main.prototype.LaunchFire = function()
 	{
 		var self = this;
 
@@ -64,15 +69,23 @@ var Main = (function() {
 		
 		// immediatly the tree at this position was burned & after the fire spreading
 		// Check before is not water
-		if(self.forest[fireX][fireY].typeOf != undefined &&
-			self.forest[fireX][fireY].typeOf == 'Water'
-		)
+		if(self.forest[fireX][fireY] != undefined
+			&& self.forest[fireX][fireY].typeOf != undefined)
 		{
-			self.launchFire();
+			if(self.forest[fireX][fireY].typeOf == undefined ||
+				self.forest[fireX][fireY].typeOf == 'Water'
+			)
+			{
+				self.launchFire();
+			}
+			else 
+			{
+				self.forest[fireX][fireY].changeState(1, self.forest, self.percolation, self.sizeX, self.sizeY);
+			}
 		}
-		else 
+		else
 		{
-			self.forest[fireX][fireY].changeState(1, self.forest, self.percolation, self.sizeX, self.sizeY);
+			alert('Create before a forest ;)');
 		}
 	};
 

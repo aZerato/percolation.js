@@ -21,7 +21,7 @@ var Water = (function() {
 		this.ctx.fillRect(posX, posY, 1, 1);
 	};
 
-	Water.prototype.spreadWater = function(forest, waterPercolation, sizeX, sizeY, waterX, waterY, ctx)
+	Water.prototype.SpreadWater = function(forest, waterPercolation, sizeX, sizeY, waterX, waterY, ctx)
 	{	
 		if (waterX + 1 < sizeX &&
 			forest[waterX + 1][waterY] != undefined &&
@@ -29,13 +29,18 @@ var Water = (function() {
 					forest[waterX + 1][waterY].attempted == undefined ||
 					forest[waterX + 1][waterY].attempted == false
 				)
+				&&
+				(
+					forest[waterX + 1][waterY].typeOf == undefined ||
+					forest[waterX + 1][waterY].typeOf != 'Fire'
+				)
 			)
 		{
 			if(CanBeWater(waterPercolation))
 			{
 				var el = forest[waterX + 1][waterY];
 				el = new Water(waterX + 1, waterY, ctx);
-				el.spreadWater(forest, waterPercolation, sizeX, sizeY, waterX + 1, waterY, ctx);
+				forest = el.SpreadWater(forest, waterPercolation, sizeX, sizeY, waterX + 1, waterY, ctx);
 			}
 		}
 		
@@ -45,13 +50,18 @@ var Water = (function() {
 					forest[waterX - 1][waterY].attempted == undefined ||
 					forest[waterX - 1][waterY].attempted == false
 				)
+				&&
+				(
+					forest[waterX - 1][waterY].typeOf == undefined ||
+					forest[waterX - 1][waterY].typeOf != 'Fire'
+				)
 			)
 		{
 			if(CanBeWater(waterPercolation))
 			{
 				var el = forest[waterX - 1][waterY];
 				el = new Water(waterX - 1, waterY, ctx);
-				el.spreadWater(forest, waterPercolation, sizeX, sizeY, waterX - 1, waterY, ctx);
+				forest = el.SpreadWater(forest, waterPercolation, sizeX, sizeY, waterX - 1, waterY, ctx);
 			}
 		}
 
@@ -61,13 +71,18 @@ var Water = (function() {
 					forest[waterX][waterY + 1].attempted == undefined ||
 					forest[waterX][waterY + 1].attempted == false
 				)
+				&&
+				(
+					forest[waterX][waterY + 1].typeOf == undefined ||
+					forest[waterX][waterY + 1].typeOf != 'Fire'
+				)
 			)
 		{
 			if(CanBeWater(waterPercolation))
 			{
 				var el = forest[waterX][waterY + 1];
 				el = new Water(waterX, waterY + 1, ctx);
-				el.spreadWater(forest, waterPercolation, sizeX, sizeY, waterX, waterY + 1, ctx);
+				forest = el.SpreadWater(forest, waterPercolation, sizeX, sizeY, waterX, waterY + 1, ctx);
 			}
 		}
 
@@ -77,15 +92,22 @@ var Water = (function() {
 					forest[waterX][waterY - 1].attempted == undefined ||
 					forest[waterX][waterY - 1].attempted == false
 				)
+				&&
+				(
+					forest[waterX][waterY - 1].typeOf == undefined ||
+					forest[waterX][waterY - 1].typeOf != 'Fire'
+				)
 			)
 		{
 			if(CanBeWater(waterPercolation))
 			{
 				var el = forest[waterX][waterY - 1];
 				el = new Water(waterX, waterY - 1, ctx);
-				el.spreadWater(forest, waterPercolation, sizeX, sizeY, waterX, waterY - 1, ctx);
+				forest = el.SpreadWater(forest, waterPercolation, sizeX, sizeY, waterX, waterY - 1, ctx);
 			}
 		}
+
+		return forest;
 	};
 	
 	var CanBeWater = function(waterPercolation)
