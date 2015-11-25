@@ -24,11 +24,24 @@
 		var start = function() {
 			var $elCanvas = document.getElementById('forest');
 
-			var main = new Main($elCanvas, 300, 300, 0.50, true);
+			var main = new Main($elCanvas, 300, 300, 0.50, 0.40);
 
 			main.init();
 
-			main.launch();
+			var $elbtnW = document.getElementById('btnW');
+			$elbtnW.addEventListener("click", function() {
+				main.initWater();
+			});
+
+			var $elbtnT = document.getElementById('btnT');
+			$elbtnT.addEventListener("click", function() {
+				main.initTrees();
+			});
+
+			var $elbtnF = document.getElementById('btnF');
+			$elbtnF.addEventListener("click", function() {
+				main.launchFire();
+			});
 		};
 	</script>
 
@@ -46,6 +59,8 @@
 	<div class="wrap">
 		<canvas id="forest" width="300" height="300"></canvas>
 	</div>
+
+	<button id="btnW">Water</button><button id="btnT">Tree</button><button id="btnF">Fire</button>
 
 </body>
 </html>
