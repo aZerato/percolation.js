@@ -5,6 +5,6 @@
 Wildfire simulation
 
 
-* Not terminated
+* Not finished
 
 
